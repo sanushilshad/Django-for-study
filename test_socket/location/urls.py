@@ -14,7 +14,10 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from location import views
 
 urlpatterns = [
-    url(r'^/$', views.save_location, name='save_location'),
+    url(r'^$', views.view_location, name='view_location'),
+    url(r'^save/$', views.save_location, name='save_location'),
+    url(r'^fetch/$', views.fetch_location, name='fetch_location'),
 ]
