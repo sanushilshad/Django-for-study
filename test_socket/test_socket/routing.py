@@ -1,5 +1,6 @@
-from location import consumers
-channel_routing = {
-    'websocket.connect': consumers.ws_connect,
-    'websocket.disconnect': consumers.ws_disconnect,
-}
+from channels.routing import route
+from location.consumers import ws_message
+
+channel_routing = [
+    route("websocket.receive", ws_message),
+]
