@@ -1,3 +1,5 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +9,7 @@
 <body class="bg-dark text-white">
     <div class="container-fluid bg-dark text-white" id="app">
         <h1 style="text-align: center;">Location Page</h1>
-        <button class="btn" style="margin: 10px; background-color: lightgreen" @click="initializeWebSocket()">Fetch Live Locations</button>
+        <button class="btn" style="margin: 10px; background-color: lightgreen" @click="initializeWSBridge()">Fetch Live Locations</button>
         <table id="locationData" class="table table-dark" style="margin: 10px;">
             <tr>
                 <th>Latitude</th>
@@ -25,7 +27,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-
+<script src="{% static "js/websocketbridge.js" %}"></script>
 <script>
     var app = new Vue({
         el: "#app",
@@ -52,6 +54,19 @@
                 }
                 // Call onopen directly if socket is already open
                 if (socket.readyState == WebSocket.OPEN) socket.onopen();
+            },
+            initializeWSBridge() {
+                socket = new WebSocket("ws://" + "127.0.0.1:8000" + "/chat/");
+                socket.onmessage = function(e) {
+                    alert(e.data);
+                }
+                socket.onopen = function() {
+                    socket.send("splle");
+                }
+                if (socket.readyState == WebSocket.OPEN) socket.onopen();
+                // webSocketBridge.demultiplex('intval-updates', function(action, stream) {
+                //     console.log(action, stream);
+                // });
             }
         },
         mounted(){
