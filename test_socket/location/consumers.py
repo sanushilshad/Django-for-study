@@ -13,7 +13,7 @@ def ws_message(message):
     start_time = json_data['start_time']
     end_time = json_data['end_time']
     date = json_data['date']
-    group_name = clean_query_string('{}-{}-{}-{}'.format(user, date, start_time, end_time))
+    group_name = '{}-{}-{}-{}'.format(user, date, start_time, end_time)
     Group(group_name).send({
         "text": user,
     })
@@ -22,17 +22,11 @@ def ws_connect(message):
     # Accept the connection
     message.reply_channel.send({"accept": True})
     json_data = urlparse.parse_qs(message.content['query_string'])
-    user = json_data['user']
-    date = json_data['date']
-    start_time = json_data['start_time']
-    end_time = json_data['end_time']
-    group_name = clean_query_string('{}-{}-{}-{}'.format(user, date, start_time, end_time))
+    user = json_data['user'][0]
+    date = json_data['date'][0]
+    start_time = json_data['start_time'][0]
+    end_time = json_data['end_time'][0]
+    group_name = '{}-{}-{}-{}'.format(user, date, start_time, end_time)
     Group(group_name).add(message.reply_channel)
 
-def clean_query_string(query_string):
-    query_string = query_string.replace('[', '')
-    query_string = query_string.replace(']', '')
-    query_string = query_string.replace("'", '')
-    query_string = query_string.replace('"', '')
-    return query_string
         
