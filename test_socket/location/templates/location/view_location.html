@@ -7,7 +7,7 @@
 <body class="bg-dark text-white">
     <div class="container-fluid bg-dark text-white" id="app">
         <h1 style="text-align: center;">Location Page</h1>
-        <button class="btn" style="margin: 10px; background-color: lightgreen" @click="fetchLiveLocation()">Fetch Live Locations</button>
+        <button class="btn" style="margin: 10px; background-color: lightgreen" @click="initializeWebSocket()">Fetch Live Locations</button>
         <table id="locationData" class="table table-dark" style="margin: 10px;">
             <tr>
                 <th>Latitude</th>
@@ -37,12 +37,18 @@
                 console.log('Fetch Live Location was clicked: ', this.testString)
             },
             initializeWebSocket(){
-                socket = new WebSocket("ws://" + window.location.host + "/chat/");
+                socket = new WebSocket("ws://" + window.location.host + "/chat/?date=11-12-2021&start_time=00.00&end_time=23.59&user=sanu");
                 socket.onmessage = function(e) {
                     alert(e.data);
                 }
                 socket.onopen = function() {
-                    socket.send("hello world");
+                    let a = {"date": "11-12-2021",
+                    "start_time": "00.00",
+                    "end_date": "23.59",
+                    "user": "sanu"
+                }
+                 let jsonStringSample = JSON.stringify(a)
+                    socket.send("splle");
                 }
                 // Call onopen directly if socket is already open
                 if (socket.readyState == WebSocket.OPEN) socket.onopen();
@@ -50,7 +56,7 @@
         },
         mounted(){
             console.log('Initialized: ', this.testString)
-            this.initializeWebSocket();
+            
         },
     });
 </script>

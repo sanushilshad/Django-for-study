@@ -4,7 +4,7 @@ from django.http import JsonResponse, response
 from django.views.decorators.csrf import csrf_exempt
 import json
 import time
-
+import  traceback
 # Create your views here.
 def view_location(request):
     return render(request, 'location\\view_location.html')
@@ -29,6 +29,8 @@ def save_location(request):
         }
 
     except Exception as e:
+        err = traceback.format_exc()
+        print(err)
         print('Exception at save_location in location: ', e)
         response = {
             'status': False,
