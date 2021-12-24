@@ -37,12 +37,19 @@
                 console.log('Fetch Live Location was clicked: ', this.testString)
             },
             initializeWebSocket(){
-                socket = new WebSocket("ws://" + window.location.host + "/chat/");
+                socket = new WebSocket("ws://" + window.location.host +  "/chat/?date=11-12-2021&start_time=00.00&end_time=23.59&user=sanu");
                 socket.onmessage = function(e) {
                     alert(e.data);
                 }
                 socket.onopen = function() {
-                    socket.send("hello world");
+                    let sample = {
+                        "date": "11-12-2021",
+                        "start_time": "00.00",
+                        "end_time": "23.59",
+                        "user": "sanu"
+                    }
+                    let jsonStringSample = JSON.stringify(sample)
+                    socket.send(jsonStringSample);
                 }
                 // Call onopen directly if socket is already open
                 if (socket.readyState == WebSocket.OPEN) socket.onopen();
